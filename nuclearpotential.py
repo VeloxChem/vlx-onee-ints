@@ -39,7 +39,7 @@ class NuclearPotential:
 
         return len(self.cart_b)
 
-    def apply_gradient_a(self):
+    def apply_gradient_a(self, grad_symbol='m'):
 
         # Note: This only contains the orbital part of gradient and does not
         # include the operator part of gradient. The latter can be obtained
@@ -49,17 +49,41 @@ class NuclearPotential:
 
         coef_s = ['2 * a_i']
         eri_s = [
-            NuclearPotential(self.cart_a + ['m'], self.cart_b, self.bf_order)
+            NuclearPotential(self.cart_a + [grad_symbol], self.cart_b, self.bf_order)
         ]
 
         for ind_a in range(len(self.cart_a)):
 
-            coef_s.append(f'(-1) * delta_{self.cart_a[ind_a]}_m')
+            coef_s.append(f'(-1) * delta_{self.cart_a[ind_a]}_{grad_symbol}')
 
             new_cart_a = list(self.cart_a)
             new_cart_a.pop(ind_a)
             eri_s.append(
                 NuclearPotential(new_cart_a, self.cart_b, self.bf_order))
+
+        return coef_s, eri_s
+
+    def apply_gradient_b(self, grad_symbol='n'):
+
+        # Note: This only contains the orbital part of gradient and does not
+        # include the operator part of gradient. The latter can be obtained
+        # from ElectricField integral.
+
+        # Eq.(5), Obara-Saika JCP 1986
+
+        coef_s = ['2 * a_j']
+        eri_s = [
+            NuclearPotential(self.cart_a, self.cart_b + [grad_symbol], self.bf_order)
+        ]
+
+        for ind_b in range(len(self.cart_b)):
+
+            coef_s.append(f'(-1) * delta_{self.cart_b[ind_b]}_{grad_symbol}')
+
+            new_cart_b = list(self.cart_b)
+            new_cart_b.pop(ind_b)
+            eri_s.append(
+                NuclearPotential(self.cart_a, new_cart_b, self.bf_order))
 
         return coef_s, eri_s
 

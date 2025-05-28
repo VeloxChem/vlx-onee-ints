@@ -1,5 +1,6 @@
 from nuclearpotential import NuclearPotential
 from intsutils import apply_hrr_a, apply_hrr_b, simplify_coef
+from intsutils import apply_gradient
 from intswriter import write_integrals
 
 
@@ -30,6 +31,14 @@ def write_nuclear_potential(ab, flag=''):
 
     if flag == 'gradient_a':
         coefs, eris = npot_ab.apply_gradient_a()
+        coefs, eris = apply_hrr_a(coefs, eris)
+    elif flag == 'hessian_ab':
+        coefs, eris = npot_ab.apply_gradient_a(grad_symbol='m')
+        coefs, eris = apply_gradient(coefs, eris, flag='b', grad_symbol='n')
+        coefs, eris = apply_hrr_a(coefs, eris)
+    elif flag == 'hessian_ba':
+        coefs, eris = npot_ab.apply_gradient_b(grad_symbol='n')
+        coefs, eris = apply_gradient(coefs, eris, flag='a', grad_symbol='m')
         coefs, eris = apply_hrr_a(coefs, eris)
     else:
         coefs, eris = npot_ab.apply_hrr_a()
