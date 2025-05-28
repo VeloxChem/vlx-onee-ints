@@ -1,3 +1,28 @@
+def apply_gradient(coefs, eris, flag='', grad_symbol='n'):
+
+    assert flag in ['a', 'b']
+
+    new_coefs, new_eris = [], []
+
+    for c, e in zip(coefs, eris):
+
+        if flag == 'a':
+            c_s, e_s = e.apply_gradient_a(grad_symbol=grad_symbol)
+        elif flag == 'b':
+            c_s, e_s = e.apply_gradient_b(grad_symbol=grad_symbol)
+
+        for c2, e2 in zip(c_s, e_s):
+            if c == '1':
+                new_coefs.append(f'{c2}')
+            elif c2 == '1':
+                new_coefs.append(f'{c}')
+            else:
+                new_coefs.append(f'{c} * {c2}')
+            new_eris.append(e2)
+
+    return new_coefs, new_eris
+
+
 def apply_hrr_a(coefs, eris):
 
     return apply_hrr(coefs, eris, flag='a')
@@ -69,8 +94,8 @@ def simplify_coef(c):
             else:
                 denominator.append(y)
         #elif term == '(-2.0)' or term.startswith('one'):
-        elif term == '(-2.0)':
-            new_coef_terms.append(term)
+        elif term == '(-2.0)' or term == '-2':
+            new_coef_terms.append('(-2.0)')
         elif term.isdigit():
             new_coef_terms.append(term)
         elif term.startswith('delta_'):

@@ -212,6 +212,9 @@ def write_integrals(coefs, eris, indent=16, flag=''):
                                 f'PC_b{x}', f'PC[b{x}]')
 
                         new_PQ_str = new_PQ_str.replace('PC_m', 'PC[m]')
+                        new_PQ_str = new_PQ_str.replace('PC_n', 'PC[n]')
+                        new_PQ_str = new_PQ_str.replace('PC_g', 'PC[g]')
+                        new_PQ_str = new_PQ_str.replace('PC_h', 'PC[h]')
 
                         if new_PQ_str == '1':
                             new_PQ_str = '1.0'
