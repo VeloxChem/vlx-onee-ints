@@ -27,6 +27,7 @@
 #  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 #  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
 def apply_gradient(coefs, eris, flag='', grad_symbol='n'):
 
     assert flag in ['a', 'b']
@@ -133,9 +134,10 @@ def simplify_coef(c):
             new_term = '_'.join(content[:1] + sorted(content[1:]))
             new_coef_terms.append(new_term)
         elif (term.startswith('A') or term.startswith('C')
-              or term.startswith('P') or term.startswith('Q')):
+              or term.startswith('P') or term.startswith('Q')
+              or term.startswith('G')):
             new_coef_terms.append(term)
-        elif term in ['ksi', 'zeta', 'a_i', 'a_j', 'S1']:
+        elif term in ['ksi', 'zeta', 'a_i', 'a_j', 'S1', 'zeta_c']:
             new_coef_terms.append(term)
         else:
             print()

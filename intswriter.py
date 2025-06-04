@@ -27,6 +27,7 @@
 #  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 #  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
 def write_integrals(coefs, eris, indent=16, flag=''):
 
     flip_ab = False
@@ -52,7 +53,7 @@ def write_integrals(coefs, eris, indent=16, flag=''):
                 deltas.append(t)
             elif (t.startswith('P') or t.startswith('Q') or t.startswith('A')
                   or t.startswith('B') or t.startswith('C')
-                  or t.startswith('D')):
+                  or t.startswith('D') or t.startswith('G')):
                 PQs.append(t)
             else:
                 coefs.append(t)
@@ -230,6 +231,10 @@ def write_integrals(coefs, eris, indent=16, flag=''):
                             new_PQ_str = new_PQ_str.replace('P_A_', 'PB')
                             new_PQ_str = new_PQ_str.replace('AB', 'BA')
 
+                            new_PQ_str = new_PQ_str.replace('GA', 'G_A_')
+                            new_PQ_str = new_PQ_str.replace('GB', 'GA')
+                            new_PQ_str = new_PQ_str.replace('G_A_', 'GB')
+
                         for x in [0, 1, 2]:
                             new_PQ_str = new_PQ_str.replace(
                                 f'PA_a{x}', f'PA_{x}')
@@ -239,6 +244,11 @@ def write_integrals(coefs, eris, indent=16, flag=''):
                                 f'PC_a{x}', f'PC[a{x}]')
                             new_PQ_str = new_PQ_str.replace(
                                 f'PC_b{x}', f'PC[b{x}]')
+
+                            new_PQ_str = new_PQ_str.replace(
+                                f'GA_a{x}', f'GA_{x}')
+                            new_PQ_str = new_PQ_str.replace(
+                                f'GB_b{x}', f'GB_{x}')
 
                         new_PQ_str = new_PQ_str.replace('PC_m', 'PC[m]')
                         new_PQ_str = new_PQ_str.replace('PC_n', 'PC[n]')
