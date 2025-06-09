@@ -59,7 +59,10 @@ def write_nuclear_potential(ab, flag=''):
     # apply HRR on a
 
     if flag == 'gradient_a':
-        coefs, eris = npot_ab.apply_gradient_a()
+        coefs, eris = npot_ab.apply_gradient_a(grad_symbol='m')
+        coefs, eris = apply_hrr_a(coefs, eris)
+    elif flag == 'gradient_b':
+        coefs, eris = npot_ab.apply_gradient_b(grad_symbol='m')
         coefs, eris = apply_hrr_a(coefs, eris)
     elif flag == 'hessian_ab':
         coefs, eris = npot_ab.apply_gradient_a(grad_symbol='m')
